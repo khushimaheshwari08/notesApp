@@ -1,5 +1,5 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
@@ -13,30 +13,30 @@ import {
 } from 'react-native';
 
 const Login = () => {
-  // const navigation = useNavigation();
-  const [email, setEmail] = useState('kumar123@gmail.com');
-  const [password, setPassword] = useState('123');
+  const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isVisiblePassword, setIsVisiblePassword] = useState(true);
 
-  // const onDashboard = async () => {
-  //   let temp = await AsyncStorage.getItem('userData');
-  //   setLoading(true);
-  //   if (temp) {
-  //     let item = JSON.parse(temp);
-  //     if (email === item.email && password === item.password) {
-  //       setTimeout(async () => {
-  //         await AsyncStorage.setItem('isLogin', JSON.stringify(true));
-  //         navigation.replace('dashboard');
-  //       }, 2000);
-  //     } else {
-  //       alert('Incorrect username and password');
-  //       setLoading(false);
-  //     }
-  //   } else {
-  //     alert('Incorrect username and password');
-  //   }
-  // };
+  const onNotes = async () => {
+    let temp = await AsyncStorage.getItem('userData');
+    setLoading(true);
+    if (temp) {
+      let item = JSON.parse(temp);
+      if (email === item.email && password === item.password) {
+        setTimeout(async () => {
+          await AsyncStorage.setItem('isLogin', JSON.stringify(true));
+          navigation.replace('notes');
+        }, 2000);
+      } else {
+        alert('Incorrect username and password');
+        setLoading(false);
+      }
+    } else {
+      alert('Incorrect username and password');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -136,7 +136,7 @@ const Login = () => {
           </View>
           <TouchableOpacity
             disabled={email && password ? false : true}
-            onPress={() => onDashboard()}>
+            onPress={() => onNotes()}>
             <View style={styles.logBtn}>
               <Text style={styles.loginText}>
                 {loading === true ? (
@@ -152,7 +152,7 @@ const Login = () => {
             <Text style={styles.forgetPassword}>Forgot Password?</Text>
           </View>
           <TouchableOpacity 
-          // onPress={() => navigation.navigate('signUp')}
+          onPress={() => navigation.navigate('signUp')}
           >
             <View style={styles.join}>
               <Text style={styles.forgetPassword}>
