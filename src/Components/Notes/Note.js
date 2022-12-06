@@ -22,15 +22,16 @@ const width = Dimensions.get('window').width - 40;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'black',
+    // backgroundColor: '',
     width: width / 2 - 10,
     padding: 8,
     borderRadius: 10,
+    marginLeft:30
   },
   title: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: 'red'
+    color: 'black'
   },
 });
 

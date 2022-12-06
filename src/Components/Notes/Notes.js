@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import SearchBar from './SearchBar';
 import NoteInputModal from './NoteInputModal';
+import Note from './Note';
 
 const Notes = () => {
 
@@ -60,10 +61,22 @@ useEffect(() => {
         </View>
         </View>
         <SearchBar/>
-        <FlatList data={notes} keyExtractor={item =>  item.id.toString()}/>
+        <FlatList 
+        data={notes} 
+        keyExtractor={item =>  item.id.toString()}
+        renderItem={({ item }) => (
+          <Note item={item}/>
+        )}/>
+
+        { !notes.length ?(
         <View style={styles.emptyHeaderContainer}>
         <Text style={styles.emptyHeader}>Add Notes</Text>
-        <TouchableOpacity onPress={()=> setModalVisible(true)}>
+        
+         </View>
+        ) : null}
+         </TouchableOpacity>
+         
+         <TouchableOpacity onPress={()=> setModalVisible(true)}>
         <Image
               source={require('../../assets/addIcon.png')}
               style={{
@@ -74,8 +87,6 @@ useEffect(() => {
               }}
             />
         </TouchableOpacity>
-         </View>
-         </TouchableOpacity>
         <NoteInputModal
          visible={modalVisible} 
          onClose={() => setModalVisible(false)}
