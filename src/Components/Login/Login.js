@@ -38,62 +38,36 @@ const Login = () => {
     }
   };
 
+  
   return (
-    <View style={styles.container}>
+    <View style={styles.mainBody}>
       <ScrollView>
         <View>
-          <View style={styles.headerImg}>
-            <Image
-              source={require('../../assets/logo-light.png')}
-              style={{width: 100, height: 30, marginTop: 30}}
-            />
-          </View>
-          <View style={styles.content}>
-            <Text style={styles.welcome}>Welcome Back</Text>
-          </View>
-          <Text style={styles.course}>
-            You can search course, apply course and find scholarship for abroad
-            studies
-          </Text>
-
-          <View style={styles.btn}>
-            <View elevation={12} style={styles.button}>
+            <View style={{alignItems: 'center'}}>
               <Image
-                source={require('../../assets/googleIcon.png')}
-                style={{width: 20, height: 25, marginTop: 2}}
+                source={require('../../assets/note.png')}
+                style={{
+                  width: '50%',
+                  height: 100,
+                  resizeMode: 'contain',
+                  margin: 30,
+                  marginTop:100
+                }}
               />
-              <Text style={[styles.googlefb, styles.google]}>Google</Text>
+                  <Text style={styles.welcome}>Welcome Back</Text>
             </View>
-            <View elevation={12} style={styles.button}>
-              <Image
-                source={require('../../assets/fbbb.png')}
-                style={{width: 22, height: 25, marginBottom: 2}}
+            <View style={styles.SectionStyle}>
+              <TextInput
+                style={styles.inputStyle}
+                placeholder="Enter Email"
+                placeholderTextColor="black"
+                keyboardType="email-address"
+                value={email}
+                onChangeText={email => setEmail(email)}
               />
-              <Text style={[styles.googlefb, styles.fb]}>Facebook</Text>
             </View>
-          </View>
-
-          <View style={styles.inputParent}>
-            <Image
-              source={require('../../assets/rightIcon.png')}
-              style={{
-                width: 20,
-                height: 20,
-                position: 'absolute',
-                right: 40,
-                top: 15,
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your Email"
-              placeholderTextColor="gray"
-              // autoFocus={true}
-              value={email}
-              onChangeText={email => setEmail(email)}
-            />
-          </View>
-          <View style={styles.inputParent}>
+          
+            <View style={styles.SectionStyle}>
             <TouchableOpacity
               onPress={() => setIsVisiblePassword(!isVisiblePassword)}
               style={{
@@ -101,67 +75,59 @@ const Login = () => {
                 height: 45,
                 position: 'absolute',
                 right: 28,
-                top: 14,
+                top: 10,
                 zIndex: 999,
               }}>
               {isVisiblePassword ? (
                 <Image
-                  source={require('../../assets/hideIcons.png')}
+                  source={require('../../assets/hide.png')}
                   style={{
-                    width: 30,
-                    height: 22,
-                    left: 5,
+                    width: 20,
+                    height: 20,
+                    left: 25,
                   }}
                 />
               ) : (
                 <Image
-                  source={require('../../assets/images.png')}
+                  source={require('../../assets/show.png')}
                   style={{
                     width: 25,
                     height: 25,
-                    left: 6,
+                    left: 23,
+                    top: - 2,
                   }}
                 />
               )}
             </TouchableOpacity>
-            <TextInput
-              style={styles.input}
-              // secureTextEntry={true}
-              secureTextEntry={isVisiblePassword}
-              placeholder="Enter your Password"
-              placeholderTextColor="gray"
-              value={password}
-              onChangeText={password => setPassword(password)}
-            />
-          </View>
-          <TouchableOpacity
-            disabled={email && password ? false : true}
-            onPress={() => onNotes()}>
-            <View style={styles.logBtn}>
-              <Text style={styles.loginText}>
-                {loading === true ? (
+              <TextInput
+                style={styles.inputStyle}
+                placeholder="Enter Password" 
+                placeholderTextColor="black"
+                secureTextEntry={isVisiblePassword}
+                keyboardType="default"
+                value={password}
+                onChangeText={password => setPassword(password)}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              disabled={email && password ? false : true}
+              onPress={() => onNotes()}
+              >
+              <Text style={styles.buttonTextStyle}> {loading === true ? (
                   <ActivityIndicator size="small" color="#fff" />
                 ) : (
-                  'Login'
-                )}
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <View style={styles.forgot}>
-            <Text style={styles.forgetPassword}>Forgot Password?</Text>
-          </View>
-          <TouchableOpacity 
-          onPress={() => navigation.navigate('signUp')}
-          >
-            <View style={styles.join}>
-              <Text style={styles.forgetPassword}>
-                Don't have an account join us?
-              </Text>
-            </View>
-          </TouchableOpacity>
+                  'LOGIN'
+                )}</Text>
+            </TouchableOpacity>
+            <Text
+              style={styles.registerTextStyle}
+              onPress={() => navigation.navigate('signUp')}>
+              New Here ? Register
+            </Text>
+        
         </View>
-      </ScrollView>
+        </ScrollView>
     </View>
   );
 };
@@ -169,23 +135,20 @@ const Login = () => {
 export default Login;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
+  mainBody: {
     flex: 1,
-    justifyContent: 'space-between',
-  },
-
-  headerImg: {
     justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#ff9999',
+    alignContent: 'center',
   },
-
-  content: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 25,
+  SectionStyle: {
+    flexDirection: 'row',
+    height: 40,
+    marginTop: 20,
+    marginLeft: 35,
+    marginRight: 35,
+    margin: 10,
   },
-
   welcome: {
     color: 'black',
     fontSize: 30,
@@ -193,106 +156,44 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  course: {
-    color: 'black',
-    marginLeft: 11,
-    marginRight: 10,
-    marginTop: 10,
-    textAlign: 'center',
-  },
-
-  btn: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    // alignItems:'center',
-    marginTop: 35,
+  buttonStyle: {
+    backgroundColor: 	'#ff2746',
+    borderWidth: 0,
+    color: '#FFFFFF',
+    borderColor: '#7DE24E',
+    height: 40,
+    alignItems: 'center',
+    borderRadius: 30,
+    marginLeft: 35,
+    marginRight: 35,
+    marginTop: 20,
     marginBottom: 25,
   },
-
-  button: {
-    width: 155,
-    height: 50,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // padding: 15,
-    // margin: 15,
-    // gap: 5,
-    borderWidth: 2,
-    borderRadius: 6,
-    marginBottom: 5,
-    borderColor: '#c9c7c7',
-    backgroundColor: 'white',
+  buttonTextStyle: {
+    color: '#FFFFFF',
+    paddingVertical: 10,
+    fontSize: 16,
   },
-
-  shadowProp: {
-    elevation: 4,
-    shadowColor: '#c9c7c7',
-    shadowOffset: {width: -2, height: 4},
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-  },
-
-  googlefb: {
+  inputStyle: {
+    flex: 1,
     color: 'black',
-    fontSize: 15,
-    textAlign: 'center',
-    marginLeft: 7,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderWidth: 1,
+    borderRadius: 30,
+    borderColor: '#dadae8',
   },
-
-  google: {
-    marginLeft: 7,
-  },
-
-  fb: {
-    marginLeft: 1,
-  },
-
-  input: {
-    marginLeft: 15,
-    marginBottom: 20,
-    marginRight: 15,
-    height: 50,
-    borderColor: 'lightgray',
-    borderWidth: 2,
-    borderRadius: 6,
-    paddingLeft: 10,
+  registerTextStyle: {
     color: 'black',
-  },
-
-  logBtn: {
-    marginLeft: 15,
-    marginRight: 15,
-    height: 50,
-    backgroundColor: '#da1b3f',
-    borderRadius: 6,
-  },
-
-  loginText: {
-    paddingTop: 15,
     textAlign: 'center',
-    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 14,
+    alignSelf: 'center',
+    padding: 10,
   },
-
-  forgot: {
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  forgetPassword: {
-    color: '#da1b3f',
-  },
-
-  join: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 115,
-  },
-
-  inputParent: {
-    position: 'relative',
+  errorTextStyle: {
+    color: 'red',
+    textAlign: 'center',
+    fontSize: 14,
   },
 });
