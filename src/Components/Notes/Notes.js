@@ -1,18 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import SearchBar from './SearchBar';
 import NoteInputModal from './NoteInputModal';
 import Note from './Note';
+import { useNotes } from '../../context/NoteProvider';
 
 const Notes = () => {
 
   const navigation = useNavigation();
   const [name, setName] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
-  const [notes, setNotes] = useState([]);
-
+  const { notes, setNotes } = useNotes();
   const onLogout = async () => {
     await AsyncStorage.setItem('isLogin', JSON.stringify(false));
     navigation.replace('login');
@@ -32,16 +32,19 @@ setNotes(updatedNotes)
 await AsyncStorage.setItem('notes',JSON.stringify(updatedNotes))
 }
 
-const findNotes = async () => {
-    const result = await AsyncStorage.getItem('notes');
-    if (result !== null){
-      setNotes(JSON.parse(result));
-    }
-}
-
-useEffect(() => {
-findNotes()
-}, [])
+// const findNotes = async () => {
+//     const result = await AsyncStorage.getItem('notes');
+//     if (result !== null){
+//       setNotes(JSON.parse(result));
+//     }
+// }
+const openNote = note => {
+  navigation.navigate('noteDetail', { note });
+};
+// useEffect(() => {
+// findNotes()
+// // AsyncStorage.clear()
+// }, [])
 
 
 useEffect(() => {
@@ -52,23 +55,27 @@ useEffect(() => {
     <View style={styles.container}>
       <ScrollView>
         <TouchableOpacity>
-    <View style={styles.parent}>
-      <Text style={styles.userName}>Hello,{name}</Text>
+      <View style={styles.parent}>
+      <Text style={styles.userName}>Hii,{name}</Text>
         <View style={styles.logoutBtn}>
           <TouchableOpacity onPress={() => onLogout()}>
             <Text style={styles.logoutText}>Logout</Text>
           </TouchableOpacity>
         </View>
         </View>
+        {notes.length ? (
         <SearchBar/>
+        ) : null}
         <FlatList 
         data={notes} 
+        numColumns={2}
+        columnWrapperStyle={{justifyContent:'space-between'}}
         keyExtractor={item =>  item.id.toString()}
         renderItem={({ item }) => (
-          <Note item={item}/>
+          <Note onPress={() => openNote(item)} item={item}/>
         )}/>
 
-        { !notes.length ?(
+        {!notes.length ?(
         <View style={styles.emptyHeaderContainer}>
         <Text style={styles.emptyHeader}>Add Notes</Text>
         
@@ -83,7 +90,8 @@ useEffect(() => {
                 width: 40,
                 height: 40,
                 // position: 'absolute',
-                marginTop:20
+                marginTop:50,
+                left:150
               }}
             />
         </TouchableOpacity>

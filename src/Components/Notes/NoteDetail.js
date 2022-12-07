@@ -1,0 +1,163 @@
+import React, { useState } from 'react'
+import { View,Text, ScrollView, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNotes } from '../../context/NoteProvider';
+import NoteInputModal from './NoteInputModal';
+
+const formatDate = ms => {
+    const date = new Date(ms);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hrs = date.getHours();
+    const min = date.getMinutes();
+    const sec = date.getSeconds();
+  
+    return `${day}/${month}/${year} - ${hrs}:${min}:${sec}`;
+  };
+
+const NoteDetail = (props) => {
+    const [note, setNote] = useState(props.route.params.note);
+    const { setNotes } = useNotes();
+    const [showModal, setShowModal] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    const deleteNote = async () => {
+        const result = await AsyncStorage.getItem('notes');
+        let notes = [];
+        if (result !== null) notes = JSON.parse(result);
+
+        const newNotes = notes.filter(n => n.id !== note.id);
+        setNotes(newNotes);
+        await AsyncStorage.setItem('notes', JSON.stringify(newNotes));
+        props.navigation.goBack();
+    }
+
+    const handleUpdate = async(title, desc, time) => {
+        const result = await AsyncStorage.getItem('notes');
+        let notes = [];
+        if (result !== null) notes = JSON.parse(result);
+       const newNotes =  notes.filter(n => {
+            if (n.id === note.id) {
+              n.title = title;
+              n.desc = desc;
+              n.isUpdated = true;
+              n.time = time;
+      
+              setNote(n);
+            }
+            return n;
+          });
+          setNotes(newNotes);
+          await AsyncStorage.setItem('notes', JSON.stringify(newNotes));
+    }
+
+ const handleOnClose = () => setShowModal(false);
+
+ const openEditModal = () => {
+    setIsEdit(true);
+    setShowModal(true);
+  };
+
+    const displayDeleteAlert = () => {
+        Alert.alert(
+          'Are You Sure!',
+          'This action will delete your note permanently!',
+          [
+            {
+              text: 'Delete',
+              onPress: deleteNote,
+            },
+            {
+              text: 'No Thanks',
+              onPress: () => console.log('no thanks'),
+            },
+          ],
+          {
+            cancelable: true,
+          }
+        );
+      };
+  return (
+    <>
+    <ScrollView  style={styles.container}>   
+    
+   <Text style={styles.time}>
+   {note.isUpdated
+            ? `Updated At ${formatDate(note.time)}`
+            : `Created At ${formatDate(note.time)}`}
+   </Text>
+    <Text style={styles.title}>{note.title}</Text>
+    <Text  style={styles.desc}>{note.desc}</Text>
+    
+    </ScrollView>
+    
+    <View style={styles.btnContainer}>
+    <TouchableOpacity onPress={displayDeleteAlert}>
+    <Image
+              source={require('../../assets/delete.png')}
+              style={{
+                width: 25,
+                height:30,
+                bottom:20
+              }}
+              
+            />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={openEditModal}>
+                <Image
+              source={require('../../assets/edit.png')}
+              style={{
+                width: 30,
+                height: 30,
+              }}
+            />
+            </TouchableOpacity>
+    </View>
+    <NoteInputModal
+        isEdit={isEdit}
+        note={note}
+        onClose={handleOnClose}
+        onSubmit={handleUpdate}
+        visible={showModal}
+      />
+    </>
+  )
+}
+
+export default NoteDetail;
+
+const styles = StyleSheet.create({
+    container: {
+        flex:1,
+        backgroundColor: '#ff9999',
+        paddingLeft:20,
+        paddingTop:30,
+        paddingRight:15
+    },
+
+    title: {
+        fontSize: 30,
+        color: 'black',
+        fontWeight: 'bold',
+        marginBottom:10,
+      },
+
+      desc: {
+        fontSize: 20,
+        opacity: 0.6,
+      },
+
+      time: {
+        textAlign: 'right',
+        fontSize: 16,
+        marginBottom:15,
+        opacity: 0.5,
+        color:'black'
+      },
+      btnContainer: {
+        position: 'absolute',
+        right: 15,
+        bottom: 50,
+        marginBottom:40
+      },
+})

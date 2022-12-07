@@ -5,6 +5,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Notes from './src/Components/Notes/Notes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NoteDetail from './src/Components/Notes/NoteDetail';
+import NoteProvider from './src/context/NoteProvider';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -27,6 +29,7 @@ useEffect(() => {
     <>
         {render ?(
           <NavigationContainer>
+            <NoteProvider>
             <Stack.Navigator initialRouteName={auth ?"notes":"login"}>
               <Stack.Screen
                options={{headerShown: false}}
@@ -43,7 +46,13 @@ useEffect(() => {
                 name="notes"
                 component={Notes}
                 />
+                <Stack.Screen
+                options={{headerShown: false}}
+                name="noteDetail"
+                component={NoteDetail}
+                />
             </Stack.Navigator>
+            </NoteProvider>
           </NavigationContainer>
           ): null
       }

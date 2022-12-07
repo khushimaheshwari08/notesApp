@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, Text, View ,StatusBar, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Keyboard, Image} from 'react-native'
 
-const NoteInputModal = ({visible,onClose,onSubmit}) => {
+const NoteInputModal = ({visible,onClose,onSubmit,note,isEdit}) => {
  const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
 
@@ -18,21 +18,34 @@ const NoteInputModal = ({visible,onClose,onSubmit}) => {
 
   const handleSubmit = () => {
     if (!title.trim() && !desc.trim()) return onClose();
+
+    if(isEdit) {
+      onSubmit(title, desc, Date.now());
+    } else{
     onSubmit(title,desc);
     setTitle('');
     setDesc('');
   }
-
-  const closeModal = () => {
-    setTitle('');
-    setDesc('');
     onClose();
   }
 
+  const closeModal = () => {
+    if (!isEdit) {
+      setTitle('');
+      setDesc('');
+    }
+    onClose();
+  };
+  useEffect(() => {
+    if (isEdit) {
+      setTitle(note.title);
+      setDesc(note.desc);
+    }
+  }, [isEdit]);
 
   return (
     <>
-        <StatusBar hidden/>
+    {/* <StatusBar hidden/> */}
     <Modal
      visible={visible} animationType='fade'>
         <View style={styles.container}>
@@ -54,30 +67,32 @@ const NoteInputModal = ({visible,onClose,onSubmit}) => {
           </View>
           <View style={styles.btnContainer}>
             <TouchableOpacity onPress={handleSubmit}>
+               {title.trim() || desc.trim() ? (
           <Image
               source={require('../../assets/rightIcon.png')}
               style={{
-                width: 17,
-                height: 17,
+                width: 40,
+                height: 40,
+                marginRight:90
               }}
               
             />
+             ) : null}
             </TouchableOpacity>
             <TouchableOpacity  onPress={closeModal}>
-             {title.trim() || desc.trim() ? (
+             {/* {title.trim() || desc.trim() ? ( */}
             <Image
-              source={require('../../assets/hide.png')}
+              source={require('../../assets/wrongIcon.png')}
               style={{
-                width: 17,
-                height: 20,
-                marginLeft:15
+                width: 37,
+                height: 37,
               }}
             
             />
-            ) : null}
+            {/* ) : null} */}
             </TouchableOpacity>
             </View>
-        <TouchableOpacity onPress={handleModalClose}>
+            <TouchableOpacity onPress={handleModalClose}>
               <View style={[styles.modalBG, StyleSheet.absoluteFillObject]} />
         </TouchableOpacity>
      </Modal>
@@ -88,9 +103,10 @@ export default NoteInputModal;
 
 const styles = StyleSheet.create({
     container: {
+      flex:1,
       paddingHorizontal: 20,
       paddingTop: 15,
-      marginTop:20,
+      backgroundColor:'#ff9999'
     },
     input: {
       borderBottomWidth: 2,

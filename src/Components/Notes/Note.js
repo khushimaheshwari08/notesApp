@@ -22,11 +22,13 @@ const width = Dimensions.get('window').width - 40;
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: '',
+    backgroundColor: '#ff2746',
     width: width / 2 - 10,
     padding: 8,
+    marginTop:15,
     borderRadius: 10,
-    marginLeft:30
+    marginLeft:20,
+    marginRight:10
   },
   title: {
     fontWeight: 'bold',
