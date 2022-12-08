@@ -1,6 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import DatePicker from 'react-native-date-picker'
+
+// import DateTimePicker from '@react-native-community/datetimepicker';
+
 import {
   StyleSheet,
   View,
@@ -9,26 +13,36 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Button
 } from 'react-native';
+import moment from 'moment';
 
 const SignUp = () => {
 
   const navigation = useNavigation();
-  const [name, setName] = useState('')
+  const [name, setName] = useState('');
+  const [country, setCountry] = useState('');
+  const [city, setCity] = useState('');
+  const [phoneNo, setPhoneNo] = useState('');
+  // const [dob, setDob] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isVisiblePassword, setIsVisiblePassword] = useState(true);
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
+ 
+  
 
   const onLogin = async () => {
-    if (name !== '' && email !== '' && password !== '') {
-      let temp={name: name,email:email,password:password};
+    if (name !== '' && country !=='' && city !=='' && phoneNo !=='' && date !=='' && email !== '' && password !== '') {
+      let temp={name: name,country:country,city:city,phoneNo:phoneNo,date:date,email:email,password:password};
       await AsyncStorage.setItem('userData', JSON.stringify(temp));
       navigation.navigate('login');
       } else {
-        alert('Please enter name, username and password');
+        alert('Please enter details');
       }
   }
- 
+  
   return (
     <View style={{flex: 1, backgroundColor: '#ff9999'}}>
     <ScrollView>
@@ -40,22 +54,105 @@ const SignUp = () => {
               height: 100,
               resizeMode: 'contain',
               margin: 30,
-              marginTop:100
             }}
           />
           <Text style={styles.welcome}>Join us to start save notes </Text>
         </View>
-      
-          <View style={styles.SectionStyle}>
+        <View style={styles.SectionStyle}>
           <TextInput
             style={styles.inputStyle}
-            placeholder="Enter Name"
+            placeholder="Name"
             placeholderTextColor="black"
             keyboardType="default"
             value={name}
             onChangeText={name => setName(name)}
           />
           </View>
+        
+          <View style={styles.SectionStyle}>
+          <TextInput
+            style={styles.inputStyle}
+            placeholder="Country"
+            placeholderTextColor="black"
+            keyboardType="default"
+            value={country}
+            onChangeText={country => setCountry(country)}
+          />
+          </View>
+          <View style={styles.SectionStyle}>
+          <TextInput
+            style={styles.inputStyle}
+            placeholder="City"
+            placeholderTextColor="black"
+            keyboardType="default"
+            value={city}
+            onChangeText={city => setCity(city)}
+          />
+          </View>
+          <View style={styles.SectionStyle}>
+          <TextInput
+            style={styles.inputStyle}
+            placeholder="Phone No."
+            placeholderTextColor="black"
+            keyboardType="numeric"
+            value={phoneNo}
+            onChangeText={phoneNo => setPhoneNo(phoneNo)}
+          />
+          </View>
+
+          {/* <View style={styles.SectionStyle}>
+          <Text style={[styles.inputStyle,styles.dob]} onPress={() => setOpen(true)} value={date}  onChange={date => setDate(date)}>
+        
+        <DateTimePicker
+         value={date}
+         placeholderText="Pick your Date"
+         onChange = {(event, selectedDate) => {
+          const currentDate = selectedDate || date;
+          setDate(currentDate);
+         }}
+         display='default'  
+         is24Hour={false} 
+        />
+        </Text>
+      </View> */}
+
+      <View style={styles.SectionStyle} >
+        
+      <Text style={[styles.inputStyle,styles.dob]} onPress={() => setOpen(true)} value={date}  onChange={date => setDate(date)}>
+        {moment(date.toString()).format('DD/MM/YYYY') ? moment(date.toString()).format('DD/MM/YYYY') : "Dob"}
+      
+        
+        <DatePicker
+        modal
+        open={open}
+        date={date}
+        mode="date"
+        onConfirm={(date) => {
+          setOpen(false)
+          setDate(date)
+        }}
+        onCancel={() => {
+          setOpen(false)
+        }}
+      /> 
+  
+      </Text>
+         
+          </View>
+          
+    
+          {/* <View style={styles.SectionStyle}>
+          <TextInput
+            style={styles.inputStyle}
+            placeholder="Date Of Birth"
+            placeholderTextColor="black"
+            keyboardType="default"
+            value={dob}
+            onChangeText={dob => setDob(dob)}
+          />
+          </View> */}
+         
+
           <View style={styles.SectionStyle}>
           <TextInput
                 style={styles.inputStyle}
@@ -171,6 +268,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     borderColor: '#dadae8',
+  },
+  dob:{
+    paddingTop:10
   },
   errorTextStyle: {
     color: 'red',

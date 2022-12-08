@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState,useContext } from 'react'
+import React, { useEffect, useState} from 'react'
 import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import SearchBar from './SearchBar';
+// import SearchBar from './SearchBar';
 import NoteInputModal from './NoteInputModal';
 import Note from './Note';
 import { useNotes } from '../../context/NoteProvider';
@@ -56,16 +56,37 @@ useEffect(() => {
       <ScrollView>
         <TouchableOpacity>
       <View style={styles.parent}>
-      <Text style={styles.userName}>Hii,{name}</Text>
-        <View style={styles.logoutBtn}>
+      <Text style={styles.text}>Hii,</Text>
+      <TouchableOpacity  onPress={() => navigation.navigate('userDetail')}>
+      <Image
+              source={require('../../assets/user.png')}
+              style={{
+                width: 50,
+                height: 50,
+                left:70
+              }}
+            />
+      </TouchableOpacity>
+        {/* <View
+         style={styles.logoutBtn}
+        > */}
           <TouchableOpacity onPress={() => onLogout()}>
-            <Text style={styles.logoutText}>Logout</Text>
+            {/* <Text style={styles.logoutText}>Logout</Text> */}
+            <Image
+              source={require('../../assets/logout.png')}
+              style={{
+                width: 38,
+                height: 38,
+                right:15
+              }}
+            />
           </TouchableOpacity>
         </View>
-        </View>
-        {notes.length ? (
+        {/* </View> */}
+        <Text style={styles.userName}>{name}</Text>
+        {/* {notes.length ? (
         <SearchBar/>
-        ) : null}
+        ) : null} */}
         <FlatList 
         data={notes} 
         numColumns={2}
@@ -100,7 +121,6 @@ useEffect(() => {
          onClose={() => setModalVisible(false)}
          onSubmit={handleonSubmit}
          />
-       
       </ScrollView>
     </View>
     )
@@ -119,13 +139,21 @@ parent:{
   justifyContent: 'space-between',
   alignItems:'center',
   marginTop: 35,
-  marginBottom: 25,
+  marginBottom: 20,
 },
 
+text:{
+  color:'#ff2746',
+  marginLeft: 25,
+  fontSize:25,
+  fontWeight:'900'
+},
 userName:{
   color:'#ff2746',
   marginLeft: 25,
-  fontSize:40
+  fontSize:20,
+  fontWeight:'bold',
+  marginTop:-30
 },
 
   logoutBtn: {
