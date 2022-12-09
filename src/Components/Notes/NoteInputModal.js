@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, Text, View ,StatusBar, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Keyboard, Image} from 'react-native'
+import { Modal, View ,StatusBar, TextInput, StyleSheet, TouchableOpacity, Keyboard, Image} from 'react-native'
 
 const NoteInputModal = ({visible,onClose,onSubmit,note,isEdit}) => {
  const [title, setTitle] = useState('');
@@ -74,9 +74,8 @@ const NoteInputModal = ({visible,onClose,onSubmit,note,isEdit}) => {
                 width: 40,
                 height: 40,
                 marginRight:90
-              }}
-              
-            />
+              }}            
+          />
              ) : null}
             </TouchableOpacity>
             <TouchableOpacity  onPress={closeModal}>
@@ -87,7 +86,6 @@ const NoteInputModal = ({visible,onClose,onSubmit,note,isEdit}) => {
                 width: 37,
                 height: 37,
               }}
-            
             />
             {/* ) : null} */}
             </TouchableOpacity>

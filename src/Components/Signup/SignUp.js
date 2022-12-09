@@ -16,6 +16,7 @@ import {
   Button
 } from 'react-native';
 import moment from 'moment';
+import axios from 'axios';
 
 const SignUp = () => {
 
@@ -30,19 +31,71 @@ const SignUp = () => {
   const [isVisiblePassword, setIsVisiblePassword] = useState(true);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
- 
-  
 
-  const onLogin = async () => {
-    if (name !== '' && country !=='' && city !=='' && phoneNo !=='' && date !=='' && email !== '' && password !== '') {
-      let temp={name: name,country:country,city:city,phoneNo:phoneNo,date:date,email:email,password:password};
-      await AsyncStorage.setItem('userData', JSON.stringify(temp));
-      navigation.navigate('login');
-      } else {
-        alert('Please enter details');
-      }
-  }
+  // const onLogin = async () => {
+  //   {
+  //     let temp={name: name,country:country,city:city,phoneNo:phoneNo,date:date,email:email,password:password};
+  //     await AsyncStorage.setItem('userData', JSON.stringify(temp));
+  //     navigation.navigate('login');
+  //     } else {
+  //       alert('Please enter details');
+  //     }
+  // }
   
+//     const getApiData = async () => {
+//     const data ={firstName: name,city:city,phone:phoneNo,birthDate:date,email:email,password:password}
+//     await axios.post('http://localhost:3006/users',data).then((response) => {
+//       console.log(response)
+//     }).catch((error) => {
+//       console.log(error);
+//   })
+// }
+  let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+  var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=])/
+ 
+  const onLogin = async () => {
+    if(name ===''){
+      alert ('Please Enter Name' )
+      return
+    }
+    if( name.length <= 2){
+      alert ('Please Enter Full Name' )
+      return
+    }
+    if(country ===''){
+      alert ('Please Enter country')
+      return
+    } if(city ===''){
+      alert ('Please Enter city')
+      return
+    }  if(phoneNo ===''){
+      alert ('Please Enter phone no')
+      return
+    }   if(phoneNo.length !== 10){
+      alert ('Please Enter valid phone no')
+      return
+    } if(date ===''){
+      alert ('Please Enter date')
+      return
+    }  if(email ===''){
+      alert ('Please Enter email')
+      return
+    } if (reg.test(email) === false) {
+      alert('Invalid Email');
+      return
+    }  if(password ===''){
+      alert ('Please Enter password')
+      return
+    }  if (re.test(password) === false) {
+      alert( 'Password must be at least one uppercase, one lowercase, one special character and one number');
+      return
+    } 
+    let temp={name: name,country:country,city:city,phoneNo:phoneNo,date:date,email:email,password:password};
+    await AsyncStorage.setItem('userData', JSON.stringify(temp));
+    // getApiData()
+    navigation.navigate('login');
+  }
+ 
   return (
     <View style={{flex: 1, backgroundColor: '#ff9999'}}>
     <ScrollView>
@@ -100,28 +153,10 @@ const SignUp = () => {
           />
           </View>
 
-          {/* <View style={styles.SectionStyle}>
-          <Text style={[styles.inputStyle,styles.dob]} onPress={() => setOpen(true)} value={date}  onChange={date => setDate(date)}>
-        
-        <DateTimePicker
-         value={date}
-         placeholderText="Pick your Date"
-         onChange = {(event, selectedDate) => {
-          const currentDate = selectedDate || date;
-          setDate(currentDate);
-         }}
-         display='default'  
-         is24Hour={false} 
-        />
-        </Text>
-      </View> */}
-
       <View style={styles.SectionStyle} >
         
       <Text style={[styles.inputStyle,styles.dob]} onPress={() => setOpen(true)} value={date}  onChange={date => setDate(date)}>
         {moment(date.toString()).format('DD/MM/YYYY') ? moment(date.toString()).format('DD/MM/YYYY') : "Dob"}
-      
-        
         <DatePicker
         modal
         open={open}
