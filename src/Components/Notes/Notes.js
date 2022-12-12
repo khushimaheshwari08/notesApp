@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState} from 'react'
-import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 // import SearchBar from './SearchBar';
 import NoteInputModal from './NoteInputModal';
 import Note from './Note';
@@ -87,6 +87,13 @@ useEffect(() => {
         {/* {notes.length ? (
         <SearchBar/>
         ) : null} */}
+           <TouchableHighlight
+            onPress={()=>navigation.navigate('startQR')}
+            style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>
+              Open QR Scanner
+            </Text>
+          </TouchableHighlight>
         <FlatList 
         data={notes} 
         numColumns={2}
@@ -155,7 +162,24 @@ userName:{
   fontWeight:'bold',
   marginTop:-30
 },
-
+buttonStyle: {
+  flex: 1,
+  // fontSize: 16,
+  color: 'white',
+  backgroundColor: '#ff2746',
+  padding: 5,
+  // minWidth: 250,
+  height:40,
+  width:150,
+  marginLeft:25,
+  marginTop:10,
+  borderRadius:50
+},
+buttonTextStyle: {
+  padding: 5,
+  color: 'white',
+  textAlign: 'center',
+},
   logoutBtn: {
     marginRight: 25,
     height: 50,
@@ -179,7 +203,7 @@ userName:{
   emptyHeader:{
     color:'black',
     marginLeft: 25,
-    marginTop:180,
+    marginTop:150,
     fontSize:30,
     textTransform:'uppercase'
   },

@@ -35,6 +35,7 @@ const Login = () => {
       }
     } else {
       alert('Incorrect username and password');
+      setLoading(false);
     }
   };
 

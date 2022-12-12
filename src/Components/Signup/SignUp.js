@@ -13,7 +13,6 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Button
 } from 'react-native';
 import moment from 'moment';
 import axios from 'axios';
@@ -29,7 +28,7 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isVisiblePassword, setIsVisiblePassword] = useState(true);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState('');
   const [open, setOpen] = useState(false);
 
   // const onLogin = async () => {
@@ -75,7 +74,7 @@ const SignUp = () => {
       alert ('Please Enter valid phone no')
       return
     } if(date ===''){
-      alert ('Please Enter date')
+      alert ('Please Enter date of birth')
       return
     }  if(email ===''){
       alert ('Please Enter email')
@@ -156,11 +155,11 @@ const SignUp = () => {
       <View style={styles.SectionStyle} >
         
       <Text style={[styles.inputStyle,styles.dob]} onPress={() => setOpen(true)} value={date}  onChange={date => setDate(date)}>
-        {moment(date.toString()).format('DD/MM/YYYY') ? moment(date.toString()).format('DD/MM/YYYY') : "Dob"}
+        {date ? moment(date.toString()).format('DD/MM/YYYY') : "Date Of Birth"}
         <DatePicker
         modal
         open={open}
-        date={date}
+        date={date ? date : new Date()}
         mode="date"
         onConfirm={(date) => {
           setOpen(false)
@@ -175,18 +174,6 @@ const SignUp = () => {
          
           </View>
           
-    
-          {/* <View style={styles.SectionStyle}>
-          <TextInput
-            style={styles.inputStyle}
-            placeholder="Date Of Birth"
-            placeholderTextColor="black"
-            keyboardType="default"
-            value={dob}
-            onChangeText={dob => setDob(dob)}
-          />
-          </View> */}
-         
 
           <View style={styles.SectionStyle}>
           <TextInput

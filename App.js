@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoteDetail from './src/Components/Notes/NoteDetail';
 import NoteProvider from './src/context/NoteProvider';
 import UserDetail from './src/Components/Notes/UserDetail';
+import StartQRScanner from './src/Components/QRScanner/StartQRScanner';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -56,6 +57,11 @@ useEffect(() => {
                 options={{headerShown: false}}
                 name="userDetail"
                 component={UserDetail}
+                />
+                  <Stack.Screen
+                options={{headerShown: false}}
+                name="startQR"
+                component={StartQRScanner}
                 />
             </Stack.Navigator>
             </NoteProvider>
